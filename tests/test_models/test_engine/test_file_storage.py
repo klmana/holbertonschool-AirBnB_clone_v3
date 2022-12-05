@@ -18,6 +18,7 @@ import json
 import os
 import pep8
 import unittest
+from models import storage
 FileStorage = file_storage.FileStorage
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -53,7 +54,7 @@ test_file_storage.py'])
                         "file_storage.py needs a docstring")
 
     def test_file_storage_class_docstring(self):
-        """Test for the FileStorage class docstring"""
+        """Test for the FilteStorage class docstring"""
         self.assertIsNot(FileStorage.__doc__, None,
                          "FileStorage class needs a docstring")
         self.assertTrue(len(FileStorage.__doc__) >= 1,
@@ -80,7 +81,7 @@ class TestFileStorage(unittest.TestCase):
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_new(self):
-        """test that new adds an object to the FileStorage.__objects attr"""
+        """test that new atdds an object to the FileStorage.__objects attr"""
         storage = FileStorage()
         save = FileStorage._FileStorage__objects
         FileStorage._FileStorage__objects = {}
