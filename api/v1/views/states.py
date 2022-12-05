@@ -3,7 +3,8 @@
   View of State object
 """
 from api.v1.views import app_views
-from models import storage, state
+from models import storage
+from models.state import State
 from flask import jsonify, abort, request
 
 
