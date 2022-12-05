@@ -4,7 +4,7 @@ A script to create an endpoint that retrieves
 the number of objects, for each object, by type
 """
 
-from app.v1.views import app_views
+from api.v1.views import app_views
 from flask import jsonify
 from models import storage
 from models.city import City
@@ -13,34 +13,22 @@ from models.review import Review
 from models.state import State
 from models.user import User
 from models.amenity import Amenity
-#classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-#           "Place": Place, "Review": Review, "State": State, "User": User}
+
+classes = {"amenities": Amenity, "cities": City, "places": Place,
+           "reviews": Review, "states": State, "users": User}
 
 
 @app_views.route('/status')
 def status_check():
     """Returns an affirmative JSONified status message"""
-    text_format = {
-        'status': 'OK'
-        }
+    text_format = {'status': 'OK'}
     return jsonify(text_format)
 
 
-@app_views.route('/api/v1/stats')
+@app_views.route('/stats')
 def number_of_objects():
     """Displays a count of each object-type"""
-    classes = {
-        "amenities": storage.count(Amenity),
-        "cities": storage.count(City),
-        "places": storage.count(Place),
-        "reviews": storage.count(Review),
-        "states": storage.count(State),
-        "users": storage.count(User),
-        }
-    return jsonify(classes)
-
-#    class_count = {}
-#    for each_class in classes.values():
-#        class_count.append("{}: {},\n".format(
-#            each_class, storage.count(each_class)))
-#    return jsonify(class_count)
+    class_count = {}
+    for key, class_name in classes.items():
+            class_count[key] = storage.count(class_name)
+    return jsonify(class_count)
