@@ -14,7 +14,7 @@ from flask import json
 
 @app_views.route('/states', methods=["GET"])
 def states_get():
-"""Return json State object"""
+    """Return json State object"""
     state_list = []
     all_objs = storage.all("State")
     for obj in all_objs.values():
@@ -24,9 +24,9 @@ def states_get():
 
 @app_views.route('/states/<state_id>', methods=["GET"])
 def get_by_id(state_id):
-"""
-Return json State objects by id using http verb GET
-"""
+    """
+    Return json State objects by id using http verb GET
+    """
     obj = storage.get("State", state_id)
     if obj is None:
         abort(404)
@@ -36,7 +36,7 @@ Return json State objects by id using http verb GET
 
 @app_views.route('/states/<state_id>', methods=["DELETE"])
 def state_delete(state_id=None):
-"""To delete an object by given state_id"""
+    """To delete an object by given state_id"""
     obj = storage.get("State", state_id)
     if obj is None:
         abort(404)
@@ -47,7 +47,7 @@ def state_delete(state_id=None):
 
 @app_views.route('/states/', methods=["POST"])
 def post_obj():
-"""To add new state object"""
+    """To add new state object"""
     dic = {}
     dic = request.get_json(silent=True)
     if dic is None:
@@ -64,7 +64,7 @@ def post_obj():
 
 @app_views.route('/states/<state_id>', methods=["PUT"])
 def update_obj(state_id=None):
-"""To update new state object"""
+    """To update new state object"""
     dic = {}
     obj = storage.get("State", state_id)
     if obj is None:
