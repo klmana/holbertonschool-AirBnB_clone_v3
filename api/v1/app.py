@@ -1,8 +1,5 @@
 #!/usr/bin/python3
-"""
-start api
-"""
-
+"""The Flask app module"""
 from api.v1.views import app_views
 from flask import Flask, jsonify
 from flask_cors import CORS
