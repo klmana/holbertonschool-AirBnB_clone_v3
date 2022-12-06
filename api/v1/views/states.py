@@ -26,7 +26,7 @@ def states_get():
 def get_by_id(state_id):
 """
   Return json State objects by id using http verb GET
-"""
+"""curl: (7) Failed to connect to 0.0.0.0 port 5000: Connection refused
     obj = storage.get("State", state_id)
     if obj is None:
         abort(404)
@@ -37,7 +37,7 @@ def get_by_id(state_id):
 @app_views.route('/states/<state_id>', methods=["DELETE"])
 def state_delete(state_id=None):
 """
-  To delete an object by given state_id
+curl: (7) Failed to connect to 0.0.0.0 port 5000: Connection refused  To delete an object by given state_id
 """
     obj = storage.get("State", state_id)
     if obj is None:
