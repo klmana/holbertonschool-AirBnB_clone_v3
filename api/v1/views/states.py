@@ -15,6 +15,7 @@ def states_get():
 """
   Return json State object
 """
+# A simple comment Return json State object
     state_list = []
     all_objs = storage.all("State")
     for obj in all_objs.values():
@@ -37,7 +38,7 @@ def get_by_id(state_id):
 @app_views.route('/states/<state_id>', methods=["DELETE"])
 def state_delete(state_id=None):
 """
-curl: (7) Failed to connect to 0.0.0.0 port 5000: Connection refused  To delete an object by given state_id
+  To delete an object by given state_id
 """
     obj = storage.get("State", state_id)
     if obj is None:
