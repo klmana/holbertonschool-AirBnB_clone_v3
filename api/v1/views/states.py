@@ -10,6 +10,8 @@ from flask import abort
 from flask import request
 from flask import Flask
 from flask import json
+
+
 @app_views.route('/states', methods=["GET"])
 def states_get():
 """
@@ -27,7 +29,7 @@ def states_get():
 def get_by_id(state_id):
 """
   Return json State objects by id using http verb GET
-"""curl: (7) Failed to connect to 0.0.0.0 port 5000: Connection refused
+"""
     obj = storage.get("State", state_id)
     if obj is None:
         abort(404)
@@ -69,7 +71,7 @@ def post_obj():
 
 @app_views.route('/states/<state_id>', methods=["PUT"])
 def update_obj(state_id=None):
-"""
+curl: (7) Failed to connect to 0.0.0.0 port 5000: Connection refused"""
   To update new state object
 """
     dic = {}
