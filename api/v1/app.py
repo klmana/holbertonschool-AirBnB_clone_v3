@@ -10,7 +10,9 @@ from models import storage
 from os import getenv
 
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 app.register_blueprint(app_views)
+app.config.update(JSONIFY_PRETTYPRINT_REGULAR=True)
 
 
 @app.teardown_appcontext
