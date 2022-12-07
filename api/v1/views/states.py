@@ -27,7 +27,7 @@ def get_by_id(state_id):
     """
     Return json State objects by id using http verb GET
     """
-    obj = storage.get("State", state_id)
+    obj = storage.get(State, state_id)
     if obj is None:
         abort(404)
     else:
@@ -35,12 +35,13 @@ def get_by_id(state_id):
 
 
 @app_views.route('/states/<state_id>', methods=["DELETE"])
-def state_delete(state_id=None):
+def state_delete(state_id):
     """To delete an object by given state_id"""
-    obj = storage.get("State", state_id)
-    if obj is None:
+    state_obj = storage.get(State, state_id)
+    if state_obj is None:
         abort(404)
-    storage.delete(obj)
+
+    storage.delete(state_obj)
     storage.save()
     return jsonify({}), 200
 
@@ -54,7 +55,7 @@ def post_obj():
         abort(400, "Not a JSON")
     if "name" not in dic.keys():
         abort(400, "Missing name")
-    new_state = state.State()
+    new_state = State()
     for key, value in dic.items():
         setattr(new_state, key, value)
     storage.new(new_state)
@@ -63,16 +64,19 @@ def post_obj():
 
 
 @app_views.route('/states/<state_id>', methods=["PUT"])
-def update_obj(state_id=None):
-    """To update new state object"""
-    dic = {}
-    obj = storage.get("State", state_id)
-    if obj is None:
+def update_obj(state_id):
+    """To update State object"""
+    state_obj = storage.get(State, state_id)
+    if state_obj is None:
         abort(404)
-    dic = request.get_json(silent=True)
-    if dic is None:
+
+    new_dict = {}
+    ignore_list = ["id", "created_at", "updated_at"]
+    state_data = request.get_json()
+    if state_data is None:
         abort(400, "Not a JSON")
-    for key, value in dic.items():
-        setattr(obj, key, value)
-    storage.save()
-    return jsonify(obj.to_dict()), 200
+    for key, value in state_data.items():
+        if key not in ignore_list:
+            setattr(state_obj, key, value)
+    state_obj.save()
+    return jsonify(state_obj.to_dict()), 200
