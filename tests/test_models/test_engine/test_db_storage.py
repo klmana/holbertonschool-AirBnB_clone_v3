@@ -5,7 +5,6 @@ Contains the TestDBStorageDocs and TestDBStorage classes
 
 from datetime import datetime
 import inspect
-import models
 from models.engine import db_storage
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -14,6 +13,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+import models
 import json
 import os
 import pep8
@@ -94,9 +94,9 @@ class TestFileStorage(unittest.TestCase):
         test = State(name="TEST")
         storage.new(test)
         storage.save()
-        first_state_id = list(storage.all("State").values())[0].id
-        obj = storage.get("State", first_state_id)
-        self.assertTrue(obj.__class__.__name__, "State")
+        first_state_id = list(storage.all(State).values())[0].id
+        obj = storage.get(State, first_state_id)
+        self.assertTrue(obj.__class__.__name__, State)
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
@@ -104,7 +104,7 @@ class TestFileStorage(unittest.TestCase):
         test = State(name="TEST")
         storage.new(test)
         storage.save()
-        count_state = storage.count("State")
+        count_state = storage.count(State)
         count = storage.count()
         self.assertEqual(count, 1)
         self.assertEqual(count_state, 1)
