@@ -1,10 +1,10 @@
 #!/usr/bin/python3
 """
-A view of State objects, handling all default RESTFul API actions:
+A view of City objects, handling all default RESTFul API actions:
 """
 from api.v1.views import app_views
-from models import storage
 from flask import abort, jsonify, request
+from models import storage
 from models.city import City
 from models.state import State
 
@@ -61,7 +61,9 @@ def new_city(state_id):
     if city_data.get("name") is None:
         abort(400, "Missing name")
     # request.get_json transforms the HTTP body request to a dict
-    new_city = City(name=city_data["name"], state_id=state_id)
+    new_c = City()
+    new_c.name = name
+    new_c.state_id = state_id
     new_city.save()
     return jsonify(new_city.to_dict()), 201
 
@@ -81,7 +83,6 @@ def update_city(city_id):
         abort(400, "Not a JSON")
     for key, value in city_data.items():
         if key not in ignore_list:
-            new_dict[key] = value
-    city_obj.update(new_dict)
+            setattr(city_obj, key, value)
     city_obj.save()
     return jsonify(city.to_dict()), 200
