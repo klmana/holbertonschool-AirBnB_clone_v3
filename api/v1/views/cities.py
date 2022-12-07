@@ -20,7 +20,7 @@ def cities_in_state(state_id):
     list_cities = []
     cities_dict = storage.all(City).values()
     for each_city in cities_dict:
-        if state_id == city.state_id:
+        if state_id == each_city.state_id:
             list_cities.append(each_city.to_dict())
     return jsonify(list_cities)
 
@@ -56,16 +56,17 @@ def new_city(state_id):
         abort(404)
 
     city_data = request.get_json()
+    city_name = city_data.get("name")
     if city_data is None:
         abort(400, "Not a JSON")
-    if city_data.get("name") is None:
+    if city_name is None:
         abort(400, "Missing name")
     # request.get_json transforms the HTTP body request to a dict
     new_c = City()
-    new_c.name = name
+    new_c.name = city_name
     new_c.state_id = state_id
-    new_city.save()
-    return jsonify(new_city.to_dict()), 201
+    new_c.save()
+    return jsonify(new_c.to_dict()), 201
 
 
 @app_views.route('/cities/<city_id>', methods=["PUT"],
@@ -85,4 +86,4 @@ def update_city(city_id):
         if key not in ignore_list:
             setattr(city_obj, key, value)
     city_obj.save()
-    return jsonify(city.to_dict()), 200
+    return jsonify(city_obj.to_dict()), 200
