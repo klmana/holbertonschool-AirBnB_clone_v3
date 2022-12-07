@@ -53,7 +53,7 @@ class DBStorage:
 
     def get(self, cls, id):
         """Retrieves one object"""
-        all_objs = self.all()
+        all_objs = self.__session.query().all()
         search_str = "{}.{}".format(str(cls), str(id))
         result = all_objs.get(search_str)
         return result
