@@ -5,7 +5,6 @@ A view of Review objects, handling all default RESTFul API actions:
 from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models import storage
-from models.city import City
 from models.place import Place
 from models.review import Review
 from models.user import User
@@ -15,14 +14,14 @@ from models.user import User
                  strict_slashes=False)
 def reviews_all(place_id):
     """Retrieves all Review objects for a particular Place"""
+
     review_objs = storage.get(Place, place_id)
     if review_objs is None:
-        abort(404)
-
+        abort(404, "nothing here")
     list_reviews = []
-    reviews_dict = storage.all(Place)
+    reviews_dict = storage.all(Review)
     for each_review in reviews_dict.values():
-        if place_id == each_review.place_id:
+        if each_review.place_id == place_id:
             list_reviews.append(each_review.to_dict())
     return jsonify(list_reviews)
 
@@ -31,6 +30,7 @@ def reviews_all(place_id):
                  strict_slashes=False)
 def review_retrieval(review_id):
     """Retrieves a Review object"""
+
     review_obj = storage.get(Review, review_id)
     if review_obj is None:
         abort(404)
@@ -41,6 +41,7 @@ def review_retrieval(review_id):
                  strict_slashes=False)
 def review_delete(review_id):
     """Deletes a Review object"""
+
     review_obj = storage.get(Review, review_id)
     if review_obj is None:
         abort(404)
@@ -53,6 +54,7 @@ def review_delete(review_id):
                  strict_slashes=False)
 def review_new(place_id):
     """Creates a new Review object"""
+
     review_data = request.get_json(silent=True)
     if review_data is None:
         abort(400, "Not a JSON")
@@ -82,6 +84,7 @@ def review_new(place_id):
                  strict_slashes=False)
 def review_update(review_id):
     """Updates a Review object"""
+
     review_obj = storage.get(Review, review_id)
     if review_obj is None:
         abort(404)
