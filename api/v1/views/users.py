@@ -1,8 +1,8 @@
 #!/usr/bin/python3
- """
-   New view for User object that
-   handles all default RESTFul API actions:
- """
+ '''
+ New view for User object that
+ handles all default RESTFul API actions:
+ '''
 
  from api.v1.views import app_views
  from models import storage
@@ -14,7 +14,7 @@
 
  @app_views.route('/users', methods=["GET"])
  def user_ret():
-     """ Return json User objects """
+     '''Return json User objects'''
      user_list = []
      all_objs = storage.all("User")
      for obj in all_objs.values():
@@ -24,9 +24,7 @@
 
  @app_views.route('/users/<user_id>', methods=["GET"])
  def user_get_by_id(user_id):
-     """
-       Return json State objects by id
-     """
+     """Return json State objects by id"""
      obj = storage.get("User", user_id)
      if obj is None:
          abort(404)
