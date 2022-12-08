@@ -1,8 +1,5 @@
 #!/usr/bin/python3
- '''
- New view for User object that
- handles all default RESTFul API actions:
- '''
+ """New view for User object"""
 
  from api.v1.views import app_views
  from models import storage
@@ -36,9 +33,7 @@
 
  @app_views.route('/users/<user_id>', methods=["DELETE"])
  def user_delete(user_id=None):
-     """
-       To delete an object by id
-     """
+     """To delete an object by id"""
 
      obj = storage.get("User", user_id)
      if obj is None:
@@ -50,9 +45,7 @@
 
  @app_views.route('/users/', methods=["POST"])
  def post_user_obj():
-     """
-       To add new state object
-     """
+     """To add new state object"""
 
      dic = {}
      dic = request.get_json(silent=True)
@@ -71,9 +64,7 @@
 
  @app_views.route('/users/<user_id>', methods=["PUT"])
  def update_user_obj(user_id=None):
-     """
-       To update new state object
-     """
+     """To update new state object"""
 
      dic = {}
      list_key = ['id', 'email', 'created_at', 'updated_at']
