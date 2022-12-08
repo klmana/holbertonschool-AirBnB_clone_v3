@@ -19,8 +19,8 @@ def places_all(city_id):
         abort(404)
 
     list_places = []
-    places_dict = storage.all(Place).values()
-    for each_place in places_dict:
+    places_dict = storage.all(Place)
+    for each_place in places_dict.values():
         if city_id == each_place.city_id:
             list_places.append(each_place.to_dict())
     return jsonify(list_places)
@@ -39,7 +39,7 @@ def place_retrieval(place_id):
 @app_views.route('/places/<place_id>', methods=["DELETE"],
                  strict_slashes=False)
 def place_delete(place_id):
-    """Deletes a place object"""
+    """Deletes a Place object"""
     place_obj = storage.get(Place, place_id)
     if place_obj is None:
         abort(404)
@@ -81,7 +81,7 @@ def place_new(city_id):
 
 @app_views.route('/places/<place_id>', methods=["PUT"],
                  strict_slashes=False)
-def update_place(place_id):
+def place_update(place_id):
     """Updates a Place object"""
     place_obj = storage.get(Place, place_id)
     if place_obj is None:
