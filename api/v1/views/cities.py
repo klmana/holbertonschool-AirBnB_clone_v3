@@ -63,8 +63,9 @@ def new_city(state_id):
         abort(400, "Missing name")
     # request.get_json transforms the HTTP body request to a dict
     new_c = City()
-    new_c.name = city_name
-    new_c.state_id = state_id
+    for key, value in city_data.items():
+        setattr(new_c, key, value)
+    storage.new(new_c)
     new_c.save()
     return jsonify(new_c.to_dict()), 201
 
