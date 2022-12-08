@@ -12,9 +12,10 @@ from flask import Flask
 from flask import json
 
 
-@app_views.route('/states', methods=["GET"])
-def states_get():
-    """Return json State object"""
+@app_views.route('/states', methods=["GET"],
+                 strict_slashes=False)
+def states_all():
+    """Returns all State objects"""
     state_list = []
     all_objs = storage.all("State")
     for obj in all_objs.values():
@@ -22,11 +23,10 @@ def states_get():
     return jsonify(state_list)
 
 
-@app_views.route('/states/<state_id>', methods=["GET"])
-def get_by_id(state_id):
-    """
-    Return json State objects by id using http verb GET
-    """
+@app_views.route('/states/<state_id>', methods=["GET"],
+                 strict_slashes=False)
+def state_retrieval(state_id):
+    """Returns State objects based on id"""
     obj = storage.get(State, state_id)
     if obj is None:
         abort(404)
@@ -34,9 +34,10 @@ def get_by_id(state_id):
         return jsonify(obj.to_dict())
 
 
-@app_views.route('/states/<state_id>', methods=["DELETE"])
+@app_views.route('/states/<state_id>', methods=["DELETE"],
+                 strict_slashes=False)
 def state_delete(state_id):
-    """To delete an object by given state_id"""
+    """Deletes a particular State object"""
     state_obj = storage.get(State, state_id)
     if state_obj is None:
         abort(404)
@@ -46,26 +47,27 @@ def state_delete(state_id):
     return jsonify({}), 200
 
 
-@app_views.route('/states/', methods=["POST"])
-def post_obj():
-    """To add new state object"""
-    dic = {}
-    dic = request.get_json(silent=True)
-    if dic is None:
+@app_views.route('/states', methods=["POST"],
+                 strict_slashes=False)
+def state_new():
+    """Adds a new State object"""
+    state_dict = request.get_json(silent=True)
+    if state_dict is None:
         abort(400, "Not a JSON")
-    if "name" not in dic.keys():
+    if "name" not in state_dict.keys():
         abort(400, "Missing name")
-    new_state = State()
-    for key, value in dic.items():
-        setattr(new_state, key, value)
-    storage.new(new_state)
+    new_s = State()
+    for key, value in state_dict.items():
+        setattr(new_s, key, value)
+    storage.new(new_s)
     storage.save()
-    return jsonify(new_state.to_dict()), 201
+    return jsonify(new_s.to_dict()), 201
 
 
-@app_views.route('/states/<state_id>', methods=["PUT"])
-def update_obj(state_id):
-    """To update State object"""
+@app_views.route('/states/<state_id>', methods=["PUT"],
+                 strict_slashes=False)
+def state_update(state_id):
+    """Updates a State object"""
     state_obj = storage.get(State, state_id)
     if state_obj is None:
         abort(404)
