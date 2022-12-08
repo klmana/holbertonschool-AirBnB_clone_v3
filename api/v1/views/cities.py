@@ -81,7 +81,6 @@ def update_city(city_id):
     if city_obj is None:
         abort(404)
 
-    new_dict = {}
     ignore_list = ["id", "created_at", "updated_at"]
     city_data = request.get_json(silent=True)
     if city_data is None:
