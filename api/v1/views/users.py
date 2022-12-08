@@ -12,7 +12,7 @@ from flask import request
 
 
 @app_views.route('/users', methods=["GET"])
-def user_ret():
+def user_get():
     """
       Return json User objects
     """
@@ -28,7 +28,7 @@ def user_get_by_id(user_id):
     """
       Return json State objects by id
     """
-    obj = storage.get("User", user_id)
+    obj = storage.get(User, user_id)
     if obj is None:
         abort(404)
     else:
@@ -36,14 +36,14 @@ def user_get_by_id(user_id):
 
 
 @app_views.route('/users/<user_id>', methods=["DELETE"])
-def user_delete(user_id=None):
+def user_delete(user_id):
     """
       To delete an object by id
     """
-    obj = storage.get("User", user_id)
-    if obj is None:
+    user_obj = storage.get(User, user_id)
+    if user_obj is None:
         abort(404)
-    storage.delete(obj)
+    storage.delete(user_obj)
     storage.save()
     return jsonify({}), 200
 
@@ -69,20 +69,20 @@ def post_user_obj():
 
 
 @app_views.route('/users/<user_id>', methods=["PUT"])
-def update_user_obj(user_id=None):
+def update_user_obj(user_id):
     """
       To update new state object
     """
-    dic = {}
+    new_dict = {}
     list_key = ['id', 'email', 'created_at', 'updated_at']
-    obj = storage.get("User", user_id)
-    if obj is None:
+    user_obj = storage.get(User, user_id)
+    if user_obj is None:
         abort(404)
-    dic = request.get_json(silent=True)
-    if dic is None:
+    user_data = request.get_json(silent=True)
+    if user_data is None:
         abort(400, "Not a JSON")
-    for key, value in dic.items():
+    for key, value in user_data.items():
         if key not in list_key:
-            setattr(obj, key, value)
-    obj.save()
-    return jsonify(obj.to_dict()), 200
+            setattr(user_obj, key, value)
+    user_obj.save()
+    return jsonify(user_obj.to_dict()), 200
