@@ -55,7 +55,7 @@ def new_city(state_id):
     if state_obj is None:
         abort(404)
 
-    city_data = request.get_json()
+    city_data = request.get_json(silent=True)
     city_name = city_data.get("name")
     if city_data is None:
         abort(400, "Not a JSON")
