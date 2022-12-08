@@ -13,10 +13,12 @@ from flask import request
 
 @app_views.route('/users', methods=["GET"])
 def user_get():
-    """
-      Return json User objects
-    """
-    return jsonify([u.to_dict() for u in storage.all('User').values()])
+    """ Return json User objects """
+    user_list = []
+    all_objs = storage.all("User")
+    for obj in all_objs.values():
+         user_list.append(obj.to_dict())
+         return jsonify(user_list)
 
 @app_views.route('/users/<user_id>', methods=["GET"])
 def user_get_by_id(user_id):
