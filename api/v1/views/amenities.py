@@ -59,7 +59,7 @@ def new_amenity():
     new_a = Amenity()
     for key, value in amenity_data.items():
         setattr(new_a, key, value)
-    storage.new(new_c)
+    storage.new(new_a)
     new_a.save()
     return jsonify(new_a.to_dict()), 201
 
