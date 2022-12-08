@@ -18,8 +18,8 @@ def user_get():
     """
     users_list = []
     all_users = storage.all("User")
-    for user_obj in all_users.values():
-        users_list.append(user_obj.to_dict())
+    for obj in all_objs.values():
+        users_list.append(obj.to_dict())
     return jsonify(users_list)
 
 
