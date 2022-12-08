@@ -36,9 +36,9 @@ def user_delete(user_id=None):
     """Deletes a User object"""
 
     user_obj = storage.get(User, user_id)
-    if city_obj is None:
+    if user_obj is None:
         abort(404)
-    storage.delete(city_obj)
+    storage.delete(user_obj)
     storage.save()
     return jsonify({}), 200
 
@@ -58,7 +58,7 @@ def user_add():
             abort(400, "Missing password")
         if "email" not in user_data.keys():
             abort(400, "Missing email")
-        setattr(new_user, key, value)
+        setattr(new_u, key, value)
     storage.new(new_u)
     new_u.save()
     return jsonify(new_u.to_dict()), 201
@@ -69,7 +69,7 @@ def user_add():
 def update_user_obj(user_id=None):
     """To update new state object"""
 
-    user_obj = storage.get("User", user_id)
+    user_obj = storage.get(User, user_id)
     if user_obj is None:
         abort(404)
 
