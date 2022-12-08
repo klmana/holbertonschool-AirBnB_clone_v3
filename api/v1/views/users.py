@@ -17,8 +17,8 @@ def user_get():
       Return json User objects
     """
     user_list = []
-    all_objs = storage.all("User")
-    for obj in all_objs.values():
+    all_objs = storage.all(User).values()
+    for obj in all_objs:
         user_list.append(obj.to_dict())
     return jsonify(user_list)
 
