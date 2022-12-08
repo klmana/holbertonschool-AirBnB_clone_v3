@@ -75,7 +75,7 @@ def place_new(city_id):
         setattr(new_p, key, value)
     new_p.city_id = city_id
     storage.new(new_p)
-    new_c.save()
+    new_p.save()
     return jsonify(new_p.to_dict()), 201
 
 
