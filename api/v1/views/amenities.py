@@ -12,8 +12,11 @@ from models.amenity import Amenity
                  strict_slashes=False)
 def amenities_all():
     """Retrieves all Amenity objects"""
+    list_amenities = []
     amenities_dict = storage.all(Amenity).values()
-    return jsonify(amenities_dict)
+    for each_amenity in amenities_dict:
+        list_amenities.append(each_amenity.to_dict())
+    return jsonify(list_amenities)
 
 
 @app_views.route('/amenities/<amenity_id>', methods=["GET"],
@@ -26,7 +29,7 @@ def amenity_retrieval(amenity_id):
     return jsonify(amenity_obj.to_dict())
 
 
-@app_views.route('/amenities/<amenity_id>', methods=["GET"],
+@app_views.route('/amenities/<amenity_id>', methods=["DELETE"],
                  strict_slashes=False)
 def amenity_delete(amenity_id):
     """Deletes an Amenity object"""
@@ -42,14 +45,16 @@ def amenity_delete(amenity_id):
                  strict_slashes=False)
 def new_amenity():
     """Creates a new Amenity object"""
-    amenity_data = request.get_json()
+    amenity_data = request.get_json(silent=True)
     if amenity_data is None:
         abort(400, "Not a JSON")
     if amenity_data.get("name") is None:
         abort(400, "Missing name")
     # request.get_json transforms the HTTP body request to a dict
     new_a = Amenity()
-    new_a.name = name
+    for key, value in amenity_data.items():
+        setattr(new_a, key, value)
+    storage.new(new_c)
     new_a.save()
     return jsonify(new_a.to_dict()), 201
 
@@ -64,9 +69,10 @@ def update_amenity(amenity_id):
 
     new_dict = {}
     ignore_list = ["id", "created_at", "updated_at"]
-    amenity_data = request.get_json()
+    amenity_data = request.get_json(silent=True)
     if amenity_data is None:
         abort(400, "Not a JSON")
+
     for key, value in amenity_data.items():
         if key not in ignore_list:
             setattr(amenity_obj, key, value)

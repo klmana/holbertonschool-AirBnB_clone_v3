@@ -83,7 +83,7 @@ def update_city(city_id):
 
     new_dict = {}
     ignore_list = ["id", "created_at", "updated_at"]
-    city_data = request.get_json()
+    city_data = request.get_json(silent=True)
     if city_data is None:
         abort(400, "Not a JSON")
     for key, value in city_data.items():
