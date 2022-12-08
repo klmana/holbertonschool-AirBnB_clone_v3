@@ -1,8 +1,8 @@
 #!/usr/bin/python3
- '''
+ """
    New view for User object that
    handles all default RESTFul API actions:
- '''
+ """
  from api.v1.views import app_views
  from models import storage
  from models import user
