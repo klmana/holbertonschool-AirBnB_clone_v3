@@ -65,6 +65,7 @@ def new_city(state_id):
     new_c = City()
     for key, value in city_data.items():
         setattr(new_c, key, value)
+    new_c.state_id = state_id
     storage.new(new_c)
     new_c.save()
     return jsonify(new_c.to_dict()), 201
