@@ -51,17 +51,19 @@ def cities_delete(city_id):
                  strict_slashes=False)
 def new_city(state_id):
     """Creates a new City object"""
+    city_data = request.get_json(silent=True)
+    if city_data is None:
+        abort(400, "Not a JSON")
+    # request.get_json transforms the HTTP body request to a dict
+
+    city_name = city_data.get("name")
+    if city_name is None:
+        abort(400, "Missing name")
+
     state_obj = storage.get(State, state_id)
     if state_obj is None:
         abort(404)
 
-    city_data = request.get_json(silent=True)
-    city_name = city_data.get("name")
-    if city_data is None:
-        abort(400, "Not a JSON")
-    if city_name is None:
-        abort(400, "Missing name")
-    # request.get_json transforms the HTTP body request to a dict
     new_c = City()
     for key, value in city_data.items():
         setattr(new_c, key, value)
