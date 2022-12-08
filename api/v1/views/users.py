@@ -39,7 +39,7 @@ def user_delete(user_id=None):
     obj = storage.get("User", user_id)
     if obj is None:
         abort(404)
-    
+
     storage.delete(obj)
     storage.save()
     return jsonify({}), 200
@@ -73,7 +73,7 @@ def update_user_obj(user_id=None):
     obj = storage.get("User", user_id)
     if obj is None:
         abort(404)
-        
+
     dic = request.get_json(silent=True)
     if dic is None:
         abort(400, "Not a JSON")
