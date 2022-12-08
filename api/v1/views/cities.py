@@ -35,7 +35,7 @@ def cities_retrieval(city_id):
     return jsonify(city_obj.to_dict())
 
 
-@app_views.route('/cities/<city_id>', methods=["GET"],
+@app_views.route('/cities/<city_id>', methods=["DELETE"],
                  strict_slashes=False)
 def cities_delete(city_id):
     """Deletes a City object"""
