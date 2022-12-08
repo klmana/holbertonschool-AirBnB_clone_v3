@@ -1,84 +1,84 @@
 #!/usr/bin/python3
-"""
-New view for User object
-"""
+"""New view for User object"""
+
 from api.v1.views import app_views
+from flask import abort, jsonify, request
 from models import storage
-from models import user
-from flask import jsonify
-from flask import abort
-from flask import request
+from models.user import User
 
 
-@app_views.route('/users', methods=["GET"])
-def user_ret():
-    '''Return json User objects'''
+@app_views.route('/users', methods=["GET"],
+                 strict_slashes=False)
+def all_users():
+    """Returns all User objects"""
 
-    user_list = []
-    all_objs = storage.all("User")
-    for obj in all_objs.values():
-        user_list.append(obj.to_dict())
-    return jsonify(user_list)
+    list_users = []
+    user_dict = storage.all(User)
+    for each_user in user_dict.values():
+        list_users.append(each_user.to_dict())
+    return jsonify(list_users)
 
 
-@app_views.route('/users/<user_id>', methods=["GET"])
-def user_get_by_id(user_id):
-    """Return json State objects by id"""
+@app_views.route('/users/<user_id>', methods=["GET"],
+                 strict_slashes=False)
+def user_retrieval(user_id):
+    """Returns a particular User object by id"""
 
-    obj = storage.get("User", user_id)
-    if obj is None:
+    user_obj = storage.get(User, user_id)
+    if user_obj is None:
         abort(404)
-    else:
-        return jsonify(obj.to_dict())
+    return jsonify(user_obj.to_dict())
 
 
-@app_views.route('/users/<user_id>', methods=["DELETE"])
+@app_views.route('/users/<user_id>', methods=["DELETE"],
+                 strict_slashes=False)
 def user_delete(user_id=None):
-    """To delete an object by id"""
+    """Deletes a User object"""
 
-    obj = storage.get("User", user_id)
-    if obj is None:
+    user_obj = storage.get(User, user_id)
+    if city_obj is None:
         abort(404)
-
-    storage.delete(obj)
+    storage.delete(city_obj)
     storage.save()
     return jsonify({}), 200
 
 
-@app_views.route('/users/', methods=["POST"])
-def post_user_obj():
-    """To add new state object"""
+@app_views.route('/users', methods=["POST"],
+                 strict_slashes=False)
+def user_add():
+    """Adds a new User object"""
 
-    dic = {}
-    dic = request.get_json(silent=True)
-    if dic is None:
+    user_data = request.get_json(silent=True)
+    if user_data is None:
         abort(400, "Not a JSON")
-    if "password" not in dic.keys():
-        abort(400, "Missing password")
-    if "email" not in dic.keys():
-        abort(400, "Missing email")
-    new_user = user.User()
-    for key, value in dic.items():
+
+    new_u = User()
+    for key, value in user_data.items():
+        if "password" not in user_data.keys():
+            abort(400, "Missing password")
+        if "email" not in user_data.keys():
+            abort(400, "Missing email")
         setattr(new_user, key, value)
-    new_user.save()
-    return jsonify(new_user.to_dict()), 201
+    storage.new(new_u)
+    new_u.save()
+    return jsonify(new_u.to_dict()), 201
 
 
-@app_views.route('/users/<user_id>', methods=["PUT"])
+@app_views.route('/users/<user_id>', methods=["PUT"],
+                 strict_slashes=False)
 def update_user_obj(user_id=None):
     """To update new state object"""
 
-    dic = {}
-    list_key = ['id', 'email', 'created_at', 'updated_at']
-    obj = storage.get("User", user_id)
-    if obj is None:
+    user_obj = storage.get("User", user_id)
+    if user_obj is None:
         abort(404)
 
-    dic = request.get_json(silent=True)
-    if dic is None:
+    ignore_list = ["id", "email", "created_at", "updated_at"]
+    user_data = request.get_json(silent=True)
+    if user_data is None:
         abort(400, "Not a JSON")
-    for key, value in dic.items():
-        if key not in list_key:
-            setattr(obj, key, value)
-    obj.save()
-    return jsonify(obj.to_dict()), 200
+    for key, value in user_data.items():
+        if key not in ignore_list:
+            setattr(user_obj, key, value)
+    user_obj.save()
+    return jsonify(user_obj.to_dict()), 200
