@@ -16,11 +16,7 @@ def user_get():
     """
       Return json User objects
     """
-    users_list = []
-    all_objs = storage.all(User).values()
-     for obj in all_objs:
-         user_list.append(obj.to_dict())
-     return jsonify(user_list)
+    return jsonify([u.to_dict() for u in storage.all('User').values()])
 
 @app_views.route('/users/<user_id>', methods=["GET"])
 def user_get_by_id(user_id):
