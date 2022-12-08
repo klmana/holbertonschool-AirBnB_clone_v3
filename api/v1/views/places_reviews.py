@@ -17,7 +17,7 @@ def reviews_all(place_id):
 
     review_objs = storage.get(Place, place_id)
     if review_objs is None:
-        abort(404, "nothing here")
+        abort(404)
     list_reviews = []
     reviews_dict = storage.all(Review)
     for each_review in reviews_dict.values():
@@ -59,13 +59,13 @@ def review_new(place_id):
     if review_data is None:
         abort(400, "Not a JSON")
     # request.get_json transforms the HTTP body request to a dict
-    id_user = place_data.get("user_id")
+    id_user = review_data.get("user_id")
     if id_user is None:
         abort(400, "Missing user_id")
     if storage.get(User, id_user) is None:
         abort(404)
 
-    id_place = place_data.get("place_id")
+    id_place = review_data.get("place_id")
     if place_id is None:
         abort(400, "Missing name")
 
