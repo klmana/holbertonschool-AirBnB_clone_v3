@@ -15,6 +15,7 @@
  @app_views.route('/users', methods=["GET"])
  def user_ret():
      '''Return json User objects'''
+
      user_list = []
      all_objs = storage.all("User")
      for obj in all_objs.values():
@@ -25,6 +26,7 @@
  @app_views.route('/users/<user_id>', methods=["GET"])
  def user_get_by_id(user_id):
      """Return json State objects by id"""
+
      obj = storage.get("User", user_id)
      if obj is None:
          abort(404)
@@ -37,6 +39,7 @@
      """
        To delete an object by id
      """
+
      obj = storage.get("User", user_id)
      if obj is None:
          abort(404)
@@ -50,6 +53,7 @@
      """
        To add new state object
      """
+
      dic = {}
      dic = request.get_json(silent=True)
      if dic is None:
@@ -70,6 +74,7 @@
      """
        To update new state object
      """
+
      dic = {}
      list_key = ['id', 'email', 'created_at', 'updated_at']
      obj = storage.get("User", user_id)
