@@ -1,7 +1,8 @@
 #!/usr/bin/python3
-"""
-A view of Amenity objects, handling all default RESTFul API actions:
-"""
+'''
+Module containing the RESTful API view of City objects
+'''
+
 from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models import storage
@@ -12,6 +13,7 @@ from models.amenity import Amenity
                  strict_slashes=False)
 def amenities_all():
     """Retrieves all Amenity objects"""
+
     list_amenities = []
     amenities_dict = storage.all(Amenity).values()
     for each_amenity in amenities_dict:
@@ -23,6 +25,7 @@ def amenities_all():
                  strict_slashes=False)
 def amenity_retrieval(amenity_id):
     """Retrieves an Amenity object"""
+
     amenity_obj = storage.get(Amenity, amenity_id)
     if amenity_obj is None:
         abort(404)
@@ -33,6 +36,7 @@ def amenity_retrieval(amenity_id):
                  strict_slashes=False)
 def amenity_delete(amenity_id):
     """Deletes an Amenity object"""
+
     amenity_obj = storage.get(Amenity, amenity_id)
     if amenity_obj is None:
         abort(404)
@@ -45,6 +49,7 @@ def amenity_delete(amenity_id):
                  strict_slashes=False)
 def new_amenity():
     """Creates a new Amenity object"""
+
     amenity_data = request.get_json(silent=True)
     if amenity_data is None:
         abort(400, "Not a JSON")
@@ -54,7 +59,7 @@ def new_amenity():
     new_a = Amenity()
     for key, value in amenity_data.items():
         setattr(new_a, key, value)
-    storage.new(new_c)
+    storage.new(new_a)
     new_a.save()
     return jsonify(new_a.to_dict()), 201
 
@@ -63,6 +68,7 @@ def new_amenity():
                  strict_slashes=False)
 def update_amenity(amenity_id):
     """Updates an Amenity object"""
+
     amenity_obj = storage.get(Amenity, amenity_id)
     if amenity_obj is None:
         abort(404)
@@ -72,7 +78,6 @@ def update_amenity(amenity_id):
     amenity_data = request.get_json(silent=True)
     if amenity_data is None:
         abort(400, "Not a JSON")
-
     for key, value in amenity_data.items():
         if key not in ignore_list:
             setattr(amenity_obj, key, value)
