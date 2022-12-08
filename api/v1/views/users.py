@@ -16,11 +16,11 @@ def user_get():
     """
       Return json User objects
     """
-    user_list = []
-    all_objs = storage.all(User).values()
-    for obj in all_objs:
-        user_list.append(obj.to_dict())
-    return jsonify(user_list)
+    users_list = []
+    all_users = storage.all("User")
+    for user_obj in all_users.values():
+        users_list.append(user_obj.to_dict())
+    return jsonify(users_list)
 
 
 @app_views.route('/users/<user_id>', methods=["GET"])
@@ -31,7 +31,7 @@ def user_get_by_id(user_id):
     obj = storage.get(User, user_id)
     if obj is None:
         abort(404)
-    else:
+    user_obj = obj.to_dict()
         return jsonify(obj.to_dict())
 
 
