@@ -11,7 +11,7 @@ from models.review import Review
 from models.user import User
 
 
-@app_views.route('/places/<place_id>/places', methods=["GET"],
+@app_views.route('/places/<place_id>/reviews', methods=["GET"],
                  strict_slashes=False)
 def reviews_all(place_id):
     """Retrieves all Review objects for a particular Place"""
@@ -78,7 +78,7 @@ def review_new(place_id):
     return jsonify(new_r.to_dict()), 201
 
 
-@app_views.route('/reviewss/<review_id>', methods=["PUT"],
+@app_views.route('/reviews/<review_id>', methods=["PUT"],
                  strict_slashes=False)
 def review_update(review_id):
     """Updates a Review object"""
