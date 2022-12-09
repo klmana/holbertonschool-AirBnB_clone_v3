@@ -6,7 +6,6 @@ from api.v1.views import app_views
 from models import storage
 from models.state import State
 from flask import abort, jsonify, request
-from flask import Flask
 
 
 @app_views.route('/states', methods=["GET"],
@@ -14,8 +13,8 @@ from flask import Flask
 def states_all():
     """Returns all State objects"""
     state_list = []
-    objs_dict = storage.all("State")
-    for obj in objs_dict.values():
+    objs = storage.all("State")
+    for each_state in objs.values():
         state_list.append(obj.to_dict())
     return jsonify(state_list)
 
