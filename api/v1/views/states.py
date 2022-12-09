@@ -3,9 +3,9 @@
 View of State object and handles all default RESTFul API actions:
 """
 from api.v1.views import app_views
+from flask import abort, jsonify, request
 from models import storage
 from models.state import State
-from flask import abort, jsonify, request
 
 
 @app_views.route('/states', methods=["GET"],
@@ -15,7 +15,7 @@ def states_all():
     state_list = []
     objs = storage.all("State")
     for each_state in objs.values():
-        state_list.append(obj.to_dict())
+        state_list.append(each_state.to_dict())
     return jsonify(state_list)
 
 
