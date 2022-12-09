@@ -13,8 +13,8 @@ from models.state import State
                  strict_slashes=False)
 def cities_in_state(state_id):
     """Retrieves all City objects in a particular state"""
-    state_objs = storage.get(State, state_id)
-    if state_objs is None:
+    state_obj = storage.get(State, state_id)
+    if state_obj is None:
         abort(404)
 
     list_cities = []
