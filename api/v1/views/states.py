@@ -14,8 +14,8 @@ from flask import Flask
 def states_all():
     """Returns all State objects"""
     state_list = []
-    state_objs = storage.all("State")
-    for obj in state_objs.values():
+    state_objall = storage.all("State")
+    for obj in state_objall.values():
         state_list.append(obj.to_dict())
     return jsonify(state_list)
 
